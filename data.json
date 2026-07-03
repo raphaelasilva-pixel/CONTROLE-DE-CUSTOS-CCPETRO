@@ -1,0 +1,261 @@
+[
+  {
+    "categoria": "Pessoal",
+    "item": "Laureano Marques de Oliveira",
+    "detalhe": "DIRETOR DE CONTRATO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 42000.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Tairone Ferreira de Carvalho",
+    "detalhe": "SUPERINTENDENTE DE CONSTRUÇÃO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 56770.20
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Nelson Sadayuki Ogata",
+    "detalhe": "GERENTE DE CONTRATO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 45000.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Horacio Cortizo Andion Soares",
+    "detalhe": "GERENTE DE CONSTRUÇÃO E MONTAGEM",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 13692.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Rafael Claudio Torres",
+    "detalhe": "GERENTE DA QUALIDADE",
+    "empresa": "POWERCHINA",
+    "custo": 13692.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Mario Sergio Visani Di Cunto",
+    "detalhe": "GERENTE DE SUPRIMENTOS",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 24009.70
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "João Egydio Calabresi Junior",
+    "detalhe": "GERENTE ADMINISTRATIVO FINANCEIRO",
+    "empresa": "POWERCHINA",
+    "custo": 12320.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Marcio Rodrigo da Silva",
+    "detalhe": "GERENTE DE ENGENHARIA",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 12900.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Jair Carlos Araujo Silva",
+    "detalhe": "COORDENADOR DE EXCELÊNCIA OPERACIONAL",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 8892.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Raymundo Jose dos Santos Filho",
+    "detalhe": "COORDENADOR DE ELÉTRICA",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 26000.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Renato Cesar Amorim",
+    "detalhe": "ENGENHEIRO DE PROCESSO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 26000.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Thiago Dos Santos Amorim",
+    "detalhe": "SUPERVISOR DE PLANEJAMENTO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 20023.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Raimundo Nonato Cardoso da Silva Junior",
+    "detalhe": "SUPERVISOR DE PLANEJAMENTO",
+    "empresa": "POWERCHINA",
+    "custo": 10474.67
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "José Santos Junior",
+    "detalhe": "SUPERVISOR DE PLANEJAMENTO",
+    "empresa": "POWERCHINA",
+    "custo": 9941.33
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Regiane Sousa da Cruz",
+    "detalhe": "TECNICO DE DOCUMENTAÇÃO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 3104.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Ronaldo Adriano Reis",
+    "detalhe": "COORDENADOR FINANCEIRO",
+    "empresa": "POWERCHINA",
+    "custo": 816.67
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Edicelson Vasconcelos Furtado",
+    "detalhe": "TECNICO DE DOCUMENTAÇÃO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 2716.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Geraldo Pereira Batista",
+    "detalhe": "PROJETISTA",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 9500.00
+  },
+  {
+    "categoria": "Pessoal",
+    "item": "Jessé Rodrigues dos Santos Silva",
+    "detalhe": "COORDENADOR DE SUPRIMENTO",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 13124.66
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Jose Santos Junior",
+    "detalhe": "AÉREO - MAO X BEL X GRU",
+    "empresa": "POWERCHINA",
+    "custo": 4440.14
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Jose Santos Junior",
+    "detalhe": "HOSPEDAGEM - SP X TRÊS LAGOAS",
+    "empresa": "POWERCHINA",
+    "custo": 1725.00
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Raimundo Nonato da Silva Junior",
+    "detalhe": "AÉREO - THE X BEL X GRU",
+    "empresa": "POWERCHINA",
+    "custo": 3787.46
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Raimundo Nonato da Silva Junior",
+    "detalhe": "HOSPEDAGEM - SP X TRÊS LAGOAS",
+    "empresa": "POWERCHINA",
+    "custo": 1725.00
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Raimundo Nonato da Silva Junior",
+    "detalhe": "LOCAÇÃO VEÍCULO",
+    "empresa": "POWERCHINA",
+    "custo": 673.09
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Newton Jose Miranda",
+    "detalhe": "AÉREO - FLN X GRU - ARU X FLN",
+    "empresa": "POWERCHINA",
+    "custo": 1086.53
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Joao Edygio Calabrezi Junior",
+    "detalhe": "HOSPEDAGEM - SP X TRÊS LAGOAS",
+    "empresa": "POWERCHINA",
+    "custo": 3627.55
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Joao Edygio Calabrezi Junior",
+    "detalhe": "LOCAÇÃO VEÍCULO",
+    "empresa": "POWERCHINA",
+    "custo": 2853.09
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Jair Carlos Araujo Silva",
+    "detalhe": "AÉREO - CFN X GRU",
+    "empresa": "POWERCHINA",
+    "custo": 1738.20
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Horacio Andion Soares Cortizo",
+    "detalhe": "AÉREO - SSA X CGH",
+    "empresa": "POWERCHINA",
+    "custo": 756.10
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Laureano Marques de Oliveira",
+    "detalhe": "AÉREO - ARU X NAT",
+    "empresa": "POWERCHINA",
+    "custo": 1797.38
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Laureano Marques de Oliveira",
+    "detalhe": "HOSPEDAGEM - SP X TRÊS LAGOAS",
+    "empresa": "POWERCHINA",
+    "custo": 1160.00
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Rafael Claudio Torres",
+    "detalhe": "HOSPEDAGEM - SP X TRÊS LAGOAS",
+    "empresa": "POWERCHINA",
+    "custo": 1160.00
+  },
+  {
+    "categoria": "Viagens",
+    "item": "Nelson Sadayuki Ogata",
+    "detalhe": "HOSPEDAGEM - SP X TRÊS LAGOAS",
+    "empresa": "POWERCHINA",
+    "custo": 1160.00
+  },
+  {
+    "categoria": "TI",
+    "item": "Locação Notebooks (CCPETRO-N001 a N005)",
+    "detalhe": "Equipamentos de Utilização de Equipa",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 1950.00
+  },
+  {
+    "categoria": "TI",
+    "item": "Locação Notebooks (CCPETRO-N006 a N007)",
+    "detalhe": "Equipamentos em Processo de Ativação",
+    "empresa": "NOVA_ENGEVIX",
+    "custo": 780.00
+  },
+  {
+    "categoria": "Outros",
+    "item": "Aquisição de Domínio",
+    "detalhe": "Registo Institucional CCPETRO",
+    "empresa": "CCBN",
+    "custo": 184.00
+  },
+  {
+    "categoria": "Outros",
+    "item": "Vetorização de Logótipo",
+    "detalhe": "Identidade Visual e Aplicação de Marca",
+    "empresa": "CCBN",
+    "custo": 165.00
+  }
+]
