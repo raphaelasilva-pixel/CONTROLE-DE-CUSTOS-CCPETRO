@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCPETRO - Sistema Consolidado de Rateios UFN - III</title>
+    <!-- Tailwind CSS para Estilização de Alta Performance -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js para Visualização de Dados Interativa -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Paleta de Cores Estrita: Verde Petrobras, Amarelo Petrobras e Fundo Bege Papiro */
+        :root {
+            --cor-papiro: #F2ECE0;       /* Bege Papiro Nobre */
+            --cor-papiro-card: #FAF7F0;  /* Marfim Claro */
+            --borda-papiro: #D5CDBA;     /* Borda Integradora Suave */
+            --texto-escuro: #1A221E;     /* Carbono de Alta Legibilidade */
+            
+            /* Identidade Petrobras */
+            --verde-petrobras: #008542;  /* Verde Oficial */
+            --verde-escuro: #00592F;     /* Verde Escuro para Fontes */
+            --amarelo-petrobras: #FFD200;/* Amarelo Oficial */
+            
+            /* Cores dos Consórcios Fortes e Elegantes */
+            --cor-engevix: #1B365D;      /* Azul Real Profundo */
+            --cor-powerchina: #8B1E2B;   /* Vermelho Granada */
+            --cor-ccbn: #9E782F;         /* Ouro Antigo */
+        }
+
+        .dark {
+            --cor-papiro: #0E1210;
+            --cor-papiro-card: #151B18;
+            --borda-papiro: #26302B;
+            --texto-escuro: #F3F7F5;
+            
+            --cor-engevix: #3B82F6;
+            --cor-powerchina: #EF4444;
+            --cor-ccbn: #F59E0B;
+        }
+
+        body {
+            background-color: var(--cor-papiro);
+            color: var(--texto-escuro);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .custom-card {
+            background-color: var(--cor-papiro-card);
+            border: 1px solid var(--borda-papiro);
+        }
+
+        /* Barra de Navegação de Abas - Fundo Azul Real da Logo e Fonte Off-White */
+        .navigation-bar {
+            background-color: var(--cor-engevix) !important;
+            border-bottom: 4px solid var(--verde-petrobras);
+        }
+
+        /* Garantia de cor Off-White para os botões das abas */
+        .navigation-bar .tab-btn,
+        .light-mode .navigation-bar .tab-btn {
+            color: #FAF7F0 !important;
+            font-weight: 800;
+            border-bottom: 4px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .navigation-bar .tab-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF !important;
+        }
+
+        /* Estilo da aba ativa - Destaque em Amarelo Petrobras */
+        .navigation-bar .tab-active,
+        .light-mode .navigation-bar .tab-active {
+            border-bottom: 4px solid var(--amarelo-petrobras) !important;
+            color: #FFFFFF !important;
+            background-color: rgba(255, 255, 255, 0.15);
+            font-weight: 900;
+        }
+
+        /* Estilização Forçada dos Controles do Cabeçalho - Sem Borda Verde */
+        .control-btn, .light-mode .control-btn, .dark .control-btn,
+        .control-btn span, .light-mode .control-btn span, .dark .control-btn span {
+            background-color: var(--cor-engevix) !important;
+            color: #FAF7F0 !important;
+            border: 1px solid var(--cor-engevix) !important; /* Substituído o contorno verde pelo próprio tom de azul */
+        }
+        
+        .control-btn:hover, .light-mode .control-btn:hover,
+        .control-btn:hover span, .light-mode .control-btn:hover span {
+            background-color: #122543 !important; /* Azul ligeiramente mais escuro no hover */
+            color: #FFFFFF !important;
+            border-color: #122543 !important;
+        }
+
+        /* Garantia de Textos Escuros no Modo Dia (Exceto nos botões de controle e abas) */
+        .light-mode {
+            background-color: #F2ECE0 !important;
+            color: #1A221E !important;
+        }
+
+        .light-mode .custom-card {
+            background-color: #FAF7F0 !important;
+            border-color: #D5CDBA !important;
+        }
+
+        /* Todas as fontes de conteúdo escuras no modo claro */
+        .light-mode h1, 
+        .light-mode h2, 
+        .light-mode h3, 
+        .light-mode h4, 
+        .light-mode p, 
+        .light-mode label, 
+        .light-mode th, 
+        .light-mode td {
+            color: #1A221E !important;
+        }
+
+        /* Alvo específico para evitar que spans gerais do Modo Claro sobresscrevam botões e a logo */
+        .light-mode span:not(.brand-cc):not(.brand-petro):not(.navigation-bar span):not(.control-btn span) {
+            color: #1A221E !important;
+        }
+
+        /* Protege as cores da logo contra reset do Light Mode */
+        .light-mode .brand-cc, .light-mode .brand-petro {
+            /* Mantido pelas classes específicas */
+        }
+
+        /* Botões normais ficam escuros, exceto os de controle e os das abas */
+        .light-mode button:not(.tab-btn):not(.control-btn) {
+            color: #1A221E !important;
+        }
+
+        .light-mode .text-muted,
+        .light-mode .text-slate-500,
+        .light-mode .text-gray-500 {
+            color: #3B4440 !important;
+        }
+
+        /* Classes de Salvaguarda para a Paleta do Logótipo (Evita sobreposição do Modo Claro) */
+        .brand-cc, .light-mode .brand-cc, .dark .brand-cc {
+            color: #FFD200 !important;
+        }
+        
+        .brand-petro, .light-mode .brand-petro {
+            color: #008542 !important;
+        }
+        
+        .dark .brand-petro {
+            color: #00B159 !important; /* Ajuste de brilho para contraste no modo escuro */
+        }
+
+        /* Customização da Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--verde-petrobras);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="light-mode min-h-screen flex flex-col font-sans">
+
+    <!-- CABEÇALHO CORPORATIVO -->
+    <header class="custom-card border-b py-5 px-6 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Marca Tipográfica CCPETRO UFN - III (Cores do logótipo blindadas contra sobreposição) -->
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <div class="border-l-8 border-[#008542] pl-4">
+                    <div class="flex items-center gap-3">
+                        <h1 class="text-3xl font-black tracking-wider flex items-center">
+                            <span class="brand-cc">CC</span><span class="brand-petro">PETRO</span>
+                        </h1>
+                        <span class="text-[#008542] dark:text-[#00B159] font-black text-xs px-3 py-1 rounded border border-[#008542]/30 shadow-sm uppercase tracking-wider">
+                            UFN - III
+                        </span>
+                    </div>
+                    <p class="text-xs text-muted font-bold tracking-tight uppercase mt-1">
+                        Consolidador Estratégico de Custos e Rateios
+                    </p>
+                </div>
+            </div>
+
+            <!-- Controlo Global & Modo Dia/Noite -->
+            <div class="flex items-center gap-4 w-full md:w-auto justify-end">
+                <!-- Filtro de Consórcio Rateado -->
+                <div class="min-w-[160px]">
+                    <label class="block text-[10px] uppercase font-black text-[#008542] mb-1">Consórcio Responsável</label>
+                    <select id="filtroEmpresa" onchange="atualizarDashboard()" class="control-btn w-full text-xs rounded-lg px-3 py-2 font-black focus:outline-none focus:ring-2 focus:ring-[#FFD200]">
+                        <option value="TODOS" class="bg-[#1B365D] text-[#FAF7F0]">Todos os Parceiros</option>
+                        <option value="NOVA_ENGEVIX" class="bg-[#1B365D] text-[#FAF7F0]">Nova Engevix</option>
+                        <option value="POWERCHINA" class="bg-[#1B365D] text-[#FAF7F0]">Powerchina</option>
+                        <option value="CCBN" class="bg-[#1B365D] text-[#FAF7F0]">CCBN (Custos Diretos)</option>
+                    </select>
+                </div>
+
+                <!-- Botão Toggle de Modo Escuro (Fundo Azul e Fonte Off-White) -->
+                <button id="btnTema" class="control-btn mt-5 px-4 py-2 rounded-lg text-xs font-black shadow-sm flex items-center gap-2 transition-all">
+                    <span id="iconeTema">🌙</span> <span id="textoTema">Modo Noite</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVEGAÇÃO DE ABAS REESTRUTURADA (Fundo Azul Real, Letras Off-White com Excelente Contraste) -->
+    <nav class="navigation-bar sticky top-[89px] z-40 shadow-md">
+        <div class="max-w-7xl mx-auto flex overflow-x-auto whitespace-nowrap">
+            <button onclick="mudarAba('geral')" id="tab-geral" class="tab-btn px-6 py-4 text-xs uppercase tracking-wider flex items-center gap-2 tab-active">
+                📊 Visão Geral CFO
+            </button>
+            <button onclick="mudarAba('Pessoal')" id="tab-Pessoal" class="tab-btn px-6 py-4 text-xs uppercase tracking-wider flex items-center gap-2">
+                👥 Folha de Pessoal
+            </button>
+            <button onclick="mudarAba('Viagens')" id="tab-Viagens" class="tab-btn px-6 py-4 text-xs uppercase tracking-wider flex items-center gap-2">
+                ✈️ Viagens & Estadias
+            </button>
+            <button onclick="mudarAba('TI')" id="tab-TI" class="tab-btn px-6 py-4 text-xs uppercase tracking-wider flex items-center gap-2">
+                💻 Equipamentos TI
+            </button>
+            <button onclick="mudarAba('Outros')" id="tab-Outros" class="tab-btn px-6 py-4 text-xs uppercase tracking-wider flex items-center gap-2">
+                📁 Outros Gastos
+            </button>
+        </div>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+        <!-- 1. CAMADA DE KPIS - ATUALIZADOS CONFORME O CONTEXTO DA ABA SELECIONADA -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <!-- CARD 1: CUSTO TOTAL DA ABA SELECIONADA (Valor sempre em carbono escuro) -->
+            <div class="custom-card p-5 rounded-2xl shadow-sm border-l-4 border-l-[#008542]">
+                <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest" id="tituloKpi1">Custo Consolidado</span>
+                    <span class="text-[#008542] font-bold">💰</span>
+                </div>
+                <div class="mt-2">
+                    <h3 class="text-3xl font-black text-[#1A221E] dark:text-white tracking-tight" id="valKpi1">R$ 0,00</h3>
+                    <p class="text-[10px] text-slate-600 font-bold uppercase mt-1" id="subKpi1">Total Geral Acumulado</p>
+                </div>
+            </div>
+
+            <!-- CARD 2: RATEIO NOVA ENGEVIX (Azul Real) -->
+            <div class="custom-card p-5 rounded-2xl shadow-sm border-l-4 border-l-[#1B365D]">
+                <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Nova Engevix</span>
+                    <span class="text-[#1B365D] font-bold">●</span>
+                </div>
+                <div class="mt-2">
+                    <h3 class="text-2xl font-black text-[#1B365D] dark:text-blue-400 tracking-tight" id="valKpi2">R$ 0,00</h3>
+                    <p class="text-[10px] text-slate-600 font-bold uppercase mt-1" id="subKpi2">0% de participação</p>
+                </div>
+            </div>
+
+            <!-- CARD 3: RATEIO POWERCHINA (Vermelho Granada) -->
+            <div class="custom-card p-5 rounded-2xl shadow-sm border-l-4 border-l-[#8B1E2B]">
+                <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Powerchina</span>
+                    <span class="text-[#8B1E2B] font-bold">●</span>
+                </div>
+                <div class="mt-2">
+                    <h3 class="text-2xl font-black text-[#8B1E2B] dark:text-rose-400 tracking-tight" id="valKpi3">R$ 0,00</h3>
+                    <p class="text-[10px] text-slate-600 font-bold uppercase mt-1" id="subKpi3">0% de participação</p>
+                </div>
+            </div>
+
+            <!-- CARD 4: ADM / OUTROS PARCEIROS (Ouro Antigo) -->
+            <div class="custom-card p-5 rounded-2xl shadow-sm border-l-4 border-l-[#9E782F]">
+                <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider" id="tituloKpi4">Custos Administrativos</span>
+                    <span class="text-[#9E782F] font-bold">●</span>
+                </div>
+                <div class="mt-2">
+                    <h3 class="text-2xl font-black text-[#9E782F] dark:text-amber-400 tracking-tight" id="valKpi4">R$ 0,00</h3>
+                    <p class="text-[10px] text-slate-600 font-bold uppercase mt-1" id="subKpi4">Despesas Diretas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SECCÃO VISUAL: GRÁFICOS INTERATIVOS DA ABA SELECIONADA -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="secaoGraficos">
+            
+            <!-- Gráfico 1: Análise Comparativa de Rateio -->
+            <div class="custom-card p-5 rounded-2xl shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-[#008542]">Rateio por Consórcio Parceiro</h3>
+                    <p class="text-xs text-slate-600 mb-4" id="descGrafico1">Distribuição das despesas da aba atual</p>
+                </div>
+                <div class="relative h-64 w-full">
+                    <canvas id="chartRateio"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico 2: Detalhamento por Elemento -->
+            <div class="custom-card p-5 rounded-2xl shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-[#008542]" id="tituloGrafico2">Segmentação do Custo</h3>
+                    <p class="text-xs text-slate-600 mb-4" id="descGrafico2">Divisão proporcional por item relevante</p>
+                </div>
+                <div class="relative h-64 w-full">
+                    <canvas id="chartCategorias"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. TABELA DE DETALHAMENTO DA ABA SELECIONADA -->
+        <section class="custom-card rounded-2xl shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-[#D5CDBA] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h3 class="text-sm font-black uppercase tracking-wider text-[#008542]" id="tituloTabela">Lançamentos Consolidados</h3>
+                    <p class="text-xs text-slate-600 font-medium font-mono">CCPETRO - UFN - III | Controle Geral de Lançamentos</p>
+                </div>
+                
+                <!-- Barra de Pesquisa Rápida -->
+                <div class="relative w-full sm:w-72">
+                    <input type="text" id="buscaGeral" onkeyup="atualizarDashboard()" placeholder="Pesquisar nesta tabela..." class="w-full bg-white dark:bg-slate-950 border border-[#D5CDBA] rounded-lg px-3 py-2 pl-9 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-[#008542]">
+                    <svg class="w-4 h-4 text-[#008542] absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+            </div>
+
+            <!-- Renderizador de Tabela Dinâmica -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead id="tabelaCabecalho">
+                        <!-- Gerado por JS baseado na aba ativa -->
+                    </thead>
+                    <tbody id="tabelaCorpo" class="text-xs divide-y divide-[#D5CDBA]/60">
+                        <!-- Injetado dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resumo Financeiro da Tabela -->
+            <div class="p-4 bg-[#F2ECE0]/40 text-right text-xs font-black text-slate-900 border-t border-[#D5CDBA]" id="tabelaSumario">
+                Processando lançamentos contábeis...
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER DA MARCA -->
+    <footer class="mt-auto py-6 px-4 border-t border-[#D5CDBA] text-center text-xs text-slate-950 font-black bg-[#FAF7F0] shadow-inner">
+        <p>© 2026 CCPETRO. Consórcio de Implantação UFN - III. Relatório corporativo privado para fins de auditoria de rateio.</p>
+    </footer>
+
+    <!-- LÓGICA DO DASHBOARD INTEGRADO -->
+    <script>
+        // BACKUP COMPACTO DE DADOS DE SALVAGUARDA (Fallback caso não encontre data.json localmente)
+        const backupDados = [
+            { "categoria": "Pessoal", "item": "Laureano Marques de Oliveira", "detalhe": "DIRETOR DE CONTRATO", "empresa": "NOVA_ENGEVIX", "custo": 42000.00 },
+            { "categoria": "Pessoal", "item": "Tairone Ferreira de Carvalho", "detalhe": "SUPERINTENDENTE DE CONSTRUÇÃO", "empresa": "NOVA_ENGEVIX", "custo": 56770.20 },
+            { "categoria": "Pessoal", "item": "Nelson Sadayuki Ogata", "detalhe": "GERENTE DE CONTRATO", "empresa": "NOVA_ENGEVIX", "custo": 45000.00 },
+            { "categoria": "Viagens", "item": "Jose Santos Junior", "detalhe": "AÉREO - MAO X BEL X GRU", "empresa": "POWERCHINA", "custo": 4440.14 },
+            { "categoria": "TI", "item": "Locação Notebooks (CCPETRO-N001 a N005)", "detalhe": "Equipamentos de Utilização de Equipa", "empresa": "NOVA_ENGEVIX", "custo": 1950.00 },
+            { "categoria": "Outros", "item": "Aquisição de Domínio", "detalhe": "Registo Institucional CCPETRO", "empresa": "CCBN", "custo": 184.00 }
+        ];
+
+        let baseDeDados = [];
+        let abaAtiva = 'geral'; // Estado de aba padrão
+        let refChartRateio = null;
+        let refChartCategorias = null;
+
+        // Formatação profissional de moedas reais brasileiras
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // CARREGAMENTO DINÂMICO DE DADOS DO ARQUIVO DATA.JSON
+        async function carregarDadosExternos() {
+            try {
+                const resposta = await fetch('data.json');
+                if (!resposta.ok) {
+                    throw new Error('Não foi possível carregar data.json');
+                }
+                baseDeDados = await resposta.json();
+            } catch (erro) {
+                console.warn("Utilizando dados de backup locais.", erro);
+                baseDeDados = backupDados;
+            }
+            
+            atualizarDashboard();
+        }
+
+        // CONTROLO DE ABAS
+        function mudarAba(abaId) {
+            abaAtiva = abaId;
+            
+            // Alteração de classes visuais nas abas
+            const botoesAbas = document.querySelectorAll('nav button');
+            botoesAbas.forEach(btn => {
+                btn.classList.remove('tab-active');
+            });
+            document.getElementById(`tab-${abaId}`).classList.add('tab-active');
+            
+            // Limpa o campo de pesquisa ao mudar de aba para evitar confusão de dados
+            document.getElementById('buscaGeral').value = '';
+
+            atualizarDashboard();
+        }
+
+        // ATUALIZAÇÃO DO MODELO DE DADOS CONFORME ABA SELECIONADA
+        function atualizarDashboard() {
+            const filtroEmpresa = document.getElementById('filtroEmpresa').value;
+            const buscaGeral = document.getElementById('buscaGeral').value.toLowerCase();
+
+            // Filtragem hierárquica por Aba e depois por filtros selecionados
+            const dadosFiltradosPorAba = baseDeDados.filter(r => {
+                if (abaAtiva === 'geral') return true;
+                return r.categoria === abaAtiva;
+            });
+
+            const dadosFinais = dadosFiltradosPorAba.filter(r => {
+                const watercolorResponse = (filtroEmpresa === 'TODOS' || r.empresa === filtroEmpresa);
+                const correspondeBusca = r.item.toLowerCase().includes(buscaGeral) || 
+                                          r.detalhe.toLowerCase().includes(buscaGeral) ||
+                                          r.categoria.toLowerCase().includes(buscaGeral);
+                return watercolorResponse && correspondeBusca;
+            });
+
+            // 1. PROCESSAR OS CALCULOS DE ACORDO COM O CONTEXTO DA ABA
+            processarKPIs(dadosFinais, filtroEmpresa);
+
+            // 2. CONSTRUIR E ADAPTAR TABELA DINÂMICA
+            renderizarTabela(dadosFinais);
+
+            // 3. ATUALIZAR GRÁFICOS INTERATIVOS
+            processarGraficos(dadosFinais);
+        }
+
+        // PROCESSAMENTO DINÂMICO DOS CARD DE INTELIGÊNCIA
+        function processarKPIs(dados, empresaAtiva) {
+            const custoTotal = dados.reduce((acc, r) => acc + r.custo, 0);
+            
+            // Rateios Fixos
+            const totalEngevix = dados.filter(r => r.empresa === 'NOVA_ENGEVIX').reduce((acc, r) => acc + r.custo, 0);
+            const totalPowerchina = dados.filter(r => r.empresa === 'POWERCHINA').reduce((acc, r) => acc + r.custo, 0);
+            const totalCCBN = dados.filter(r => r.empresa === 'CCBN').reduce((acc, r) => acc + r.custo, 0);
+
+            // Ajustando percentuais
+            const pctEngevix = custoTotal > 0 ? ((totalEngevix / custoTotal) * 100).toFixed(1) : 0;
+            const pctPowerchina = custoTotal > 0 ? ((totalPowerchina / custoTotal) * 100).toFixed(1) : 0;
+
+            // Renderizar textos nos KPIs conforme aba
+            if (abaAtiva === 'geral') {
+                document.getElementById('tituloKpi1').innerText = "Custo Consolidado Total";
+                document.getElementById('subKpi1').innerText = "Total Geral CCPETRO";
+                document.getElementById('tituloKpi4').innerText = "Custos Administrativos CCBN";
+                document.getElementById('subKpi4').innerText = "Despesas de Apoio";
+            } else {
+                document.getElementById('tituloKpi1').innerText = `Custo Total: ${abaAtiva}`;
+                document.getElementById('subKpi1').innerText = `Filtro de Categoria ativo`;
+                document.getElementById('tituloKpi4').innerText = "Rateio Geral Administrativo";
+                document.getElementById('subKpi4').innerText = "Gastos não operacionais";
+            }
+
+            // Injetar valores
+            document.getElementById('valKpi1').innerText = formatarMoeda(custoTotal);
+            document.getElementById('valKpi2').innerText = formatarMoeda(totalEngevix);
+            document.getElementById('valKpi3').innerText = formatarMoeda(totalPowerchina);
+            document.getElementById('valKpi4').innerText = formatarMoeda(totalCCBN);
+
+            document.getElementById('subKpi2').innerText = `${pctEngevix}% de participação`;
+            document.getElementById('subKpi3').innerText = `${pctPowerchina}% de participação`;
+        }
+
+        // DESENHAR TABELA CONFORME COLUNAS REAIS DA PLANILHA
+        function renderizarTabela(dados) {
+            const cabecalho = document.getElementById('tabelaCabecalho');
+            const corpo = document.getElementById('tabelaCorpo');
+            const sumario = document.getElementById('tabelaSumario');
+
+            cabecalho.innerHTML = '';
+            corpo.innerHTML = '';
+
+            // Definindo estrutura de colunas dinamicamente com base na aba ativa
+            let colunas = [];
+            if (abaAtiva === 'Pessoal') {
+                colunas = ['Nome do Colaborador', 'Cargo / Função', 'Consórcio Parceiro', 'Valor'];
+            } else if (abaAtiva === 'Viagens') {
+                colunas = ['Passageiro / Beneficiário', 'Trecho / Descrição', 'Consórcio Parceiro', 'Valor'];
+            } else if (abaAtiva === 'TI') {
+                colunas = ['Item / Equipamento', 'Usuário / Descrição', 'Consórcio Parceiro', 'Valor'];
+            } else if (abaAtiva === 'Outros') {
+                colunas = ['Descrição do Gasto', 'Tipo de Pagamento', 'Consórcio Parceiro', 'Valor'];
+            } else { // Visão Geral
+                colunas = ['Categoria', 'Item / Lançamento', 'Detalhe do Gasto', 'Parceiro', 'Valor'];
+            }
+
+            // Montar Headers da Tabela
+            let thHTML = `<tr class="bg-[#FAF7F0] dark:bg-slate-900 border-b border-[#D5CDBA] text-xs font-black uppercase tracking-wider text-[#1A221E]">`;
+            colunas.forEach(col => {
+                thHTML += `<th class="p-4 ${col === 'Valor' ? 'text-right' : ''}">${col}</th>`;
+            });
+            thHTML += '</tr>';
+            cabecalho.innerHTML = thHTML;
+
+            // Injetar Linhas
+            if (dados.length === 0) {
+                corpo.innerHTML = `<tr><td colspan="${colunas.length}" class="p-8 text-center text-[#1A221E] font-black">Nenhum lançamento contábil encontrado para o filtro selecionado.</td></tr>`;
+                sumario.innerText = `Processados R$ 0,00 acumulados em 0 lançamentos`;
+                return;
+            }
+
+            dados.forEach(r => {
+                let badgeEmpresa = '';
+                if (r.empresa === 'NOVA_ENGEVIX') {
+                    badgeEmpresa = 'bg-blue-100 text-blue-900 border-blue-200 font-bold dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800';
+                } else if (r.empresa === 'POWERCHINA') {
+                    badgeEmpresa = 'bg-rose-100 text-rose-900 border-rose-200 font-bold dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-800';
+                } else {
+                    badgeEmpresa = 'bg-amber-100 text-amber-900 border-amber-200 font-bold dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800';
+                }
+
+                let badgeCategoria = '';
+                switch (r.categoria) {
+                    case 'Pessoal': badgeCategoria = 'bg-[#00592F]/15 text-[#004D20] font-black dark:bg-emerald-950/40 dark:text-[#00B159]'; break;
+                    case 'Viagens': badgeCategoria = 'bg-indigo-100 text-indigo-950 font-black dark:bg-indigo-950/40 dark:text-indigo-400'; break;
+                    case 'TI': badgeCategoria = 'bg-purple-100 text-purple-950 font-black dark:bg-purple-950/40 dark:text-purple-400'; break;
+                    default: badgeCategoria = 'bg-slate-200 text-slate-950 font-black dark:bg-slate-700/50 dark:text-slate-300';
+                }
+
+                let tdHTML = `<tr class="hover:bg-[#00592F]/5 border-b border-[#D5CDBA]/50 transition-colors">`;
+                
+                if (abaAtiva === 'geral') {
+                    tdHTML += `<td class="p-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${badgeCategoria}">${r.categoria}</span></td>`;
+                    tdHTML += `<td class="p-4 font-bold text-[#1A221E] dark:text-slate-200">${r.item}</td>`;
+                    tdHTML += `<td class="p-4 text-slate-800 dark:text-slate-400 font-bold">${r.detalhe}</td>`;
+                } else {
+                    tdHTML += `<td class="p-4 font-bold text-[#1A221E] dark:text-slate-200">${r.item}</td>`;
+                    tdHTML += `<td class="p-4 text-slate-800 dark:text-slate-400 font-bold">${r.detalhe}</td>`;
+                }
+
+                tdHTML += `
+                    <td class="p-4">
+                        <span class="px-2.5 py-1 text-[10px] font-black rounded-md border whitespace-nowrap ${badgeEmpresa}">
+                            ${r.empresa.replace('_', ' ')}
+                        </span>
+                    </td>
+                    <td class="p-4 text-right font-black text-[#00592F] dark:text-[#00B159] text-sm">${formatarMoeda(r.custo)}</td>
+                </tr>`;
+                corpo.innerHTML += tdHTML;
+            });
+
+            const totalSoma = dados.reduce((acc, r) => acc + r.custo, 0);
+            sumario.innerText = `Processados ${formatarMoeda(totalSoma)} acumulados em ${dados.length} lançamentos de dados`;
+        }
+
+        // CONSTRUÇÃO E RENDENIZAÇÃO DE GRÁFICOS (CHART.JS) COM AS CORES DA IDENTIDADE
+        function processarGraficos(dados) {
+            const isDark = document.body.classList.contains('dark-mode');
+            const corTexto = isDark ? '#94a3b8' : '#1A221E';
+            const corGrade = isDark ? '#334155' : '#D5CDBA';
+
+            // Destruição das instâncias de gráfico antigas
+            if (refChartRateio) refChartRateio.destroy();
+            if (refChartCategorias) refChartCategorias.destroy();
+
+            // Totalizações por Consórcio
+            const engevixTotal = dados.filter(r => r.empresa === 'NOVA_ENGEVIX').reduce((acc, r) => acc + r.custo, 0);
+            const powerchinaTotal = dados.filter(r => r.empresa === 'POWERCHINA').reduce((acc, r) => acc + r.custo, 0);
+            const ccbnTotal = dados.filter(r => r.empresa === 'CCBN').reduce((acc, r) => acc + r.custo, 0);
+
+            // Gráfico 1: Rateio por Consórcio (Horizontal Bar com Tons Nobres)
+            const ctxRateio = document.getElementById('chartRateio').getContext('2d');
+            refChartRateio = new Chart(ctxRateio, {
+                type: 'bar',
+                data: {
+                    labels: ['Nova Engevix', 'Powerchina', 'CCBN (Gerais)'],
+                    datasets: [{
+                        data: [engevixTotal, powerchinaTotal, ccbnTotal],
+                        backgroundColor: [
+                            '#1B365D', // Azul Real Profundo
+                            '#8B1E2B', // Vermelho Granada
+                            '#9E782F'  // Ouro Antigo
+                        ],
+                        borderWidth: 0,
+                        borderRadius: 6,
+                        barThickness: 35
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => ` ${formatarMoeda(ctx.raw)}` } }
+                    },
+                    scales: {
+                        x: { grid: { color: corGrade }, ticks: { color: corTexto, font: { weight: 'bold' } } },
+                        y: { grid: { display: false }, ticks: { color: corTexto, font: { weight: 'bold' } } }
+                    }
+                }
+            });
+
+            // Configurações do Gráfico 2 de acordo com a aba selecionada
+            const ctxCategorias = document.getElementById('chartCategorias').getContext('2d');
+            
+            if (abaAtiva === 'geral') {
+                // Gráfico 2 da Visão Geral: Divisão por Categoria de Custo
+                const Pessoal = dados.filter(r => r.categoria === 'Pessoal').reduce((acc, r) => acc + r.custo, 0);
+                const Viagens = dados.filter(r => r.categoria === 'Viagens').reduce((acc, r) => acc + r.custo, 0);
+                const TI = dados.filter(r => r.categoria === 'TI').reduce((acc, r) => acc + r.custo, 0);
+                const Outros = dados.filter(r => r.categoria === 'Outros').reduce((acc, r) => acc + r.custo, 0);
+
+                document.getElementById('tituloGrafico2').innerText = "Divisão por Categoria de Gasto";
+                document.getElementById('descGrafico2').innerText = "Análise consolidada por classe de faturamento";
+
+                refChartCategorias = new Chart(ctxCategorias, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Folha de Pessoal', 'Viagens & Estadias', 'TI & Notebooks', 'Outros Custos'],
+                        datasets: [{
+                            data: [Pessoal, Viagens, TI, Outros],
+                            backgroundColor: [
+                                '#00592F', // Verde Petrobras Clássico
+                                '#4338CA', // Indigo Escuro
+                                '#6B21A8', // Purpura Escuro
+                                '#374151'  // Carbono/Cinza Escuro
+                            ],
+                            borderWidth: isDark ? 2 : 1,
+                            borderColor: isDark ? '#151B18' : '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'right', labels: { color: corTexto, font: { size: 10, weight: 'bold' }, boxWidth: 10 } },
+                            tooltip: { callbacks: { label: (ctx) => ` Total: ${formatarMoeda(ctx.raw)}` } }
+                        },
+                        cutout: '65%'
+                    }
+                });
+            } else {
+                // Gráfico 2 de Detalhamento de Aba: Top 5 Itens de custo
+                document.getElementById('tituloGrafico2').innerText = `Maiores custos em: ${abaAtiva}`;
+                document.getElementById('descGrafico2').innerText = "Análise dos top 5 maiores lançamentos da categoria";
+
+                const sortedItens = [...dados].sort((a, b) => b.custo - a.custo).slice(0, 5);
+
+                refChartCategorias = new Chart(ctxCategorias, {
+                    type: 'pie',
+                    data: {
+                        labels: sortedItens.map(i => i.item.length > 20 ? i.item.substring(0, 20) + '...' : i.item),
+                        datasets: [{
+                            data: sortedItens.map(i => i.custo),
+                            backgroundColor: [
+                                '#004D20', // Verde Floresta
+                                '#00592F', // Verde Clássico
+                                '#10B981', // Verde Claro
+                                '#9E782F', // Ouro Antigo
+                                '#8B1E2B'  // Granada
+                            ],
+                            borderWidth: isDark ? 2 : 1,
+                            borderColor: isDark ? '#151B18' : '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'right', labels: { color: corTexto, font: { size: 9, weight: 'bold' }, boxWidth: 10 } },
+                            tooltip: { callbacks: { label: (ctx) => ` Valor: ${formatarMoeda(ctx.raw)}` } }
+                        }
+                    }
+                });
+            }
+        }
+
+        // CONTROLADOR DE ALTERNAÇÃO DE TEMA (CLARO / ESCURO)
+        const btnTema = document.getElementById('btnTema');
+        const iconeTema = document.getElementById('iconeTema');
+        const textoTema = document.getElementById('textoTema');
+
+        btnTema.addEventListener('click', () => {
+            if (document.body.classList.contains('light-mode')) {
+                // Ativar modo Escuro
+                document.body.classList.replace('light-mode', 'dark-mode');
+                document.body.classList.add('dark');
+                iconeTema.innerText = '☀️';
+                textoTema.innerText = 'Modo Dia';
+            } else {
+                // Ativar modo Claro
+                document.body.classList.replace('dark-mode', 'light-mode');
+                document.body.classList.remove('dark');
+                iconeTema.innerText = '🌙';
+                textoTema.innerText = 'Modo Noite';
+            }
+            atualizarDashboard();
+        });
+
+        // Inicialização Primária da Aplicação
+        window.onload = () => {
+            document.body.classList.add('light-mode');
+            carregarDadosExternos();
+        };
+    </script>
+</body>
+</html>
